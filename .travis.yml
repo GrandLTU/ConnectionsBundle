@@ -4,7 +4,8 @@ php:
   - 5.5
   - 5.6
 env:
-  - SYMFONY="2.6.*"
+  - PREFER_LOWEST="--prefer-lowest" SYMFONY="2.6.*"
+  - PREFER_LOWEST="" SYMFONY="2.6.*"
 services:
   - elasticsearch
 install:
@@ -23,7 +24,7 @@ before_install:
 before_script:
   - composer self-update
   - echo "USE mysql;\nUPDATE user SET password=PASSWORD('root') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
-  - composer update --prefer-source
+  - composer update --prefer-source $PREFER_LOWEST
 script:
   - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
   - vendor/bin/phpcs -p --standard=$TRAVIS_BUILD_DIR/vendor/ongr/ongr-strict-standard/ONGR --ignore=vendor/,Tests/app/,Resources/public/,Sync/DiffProvider/DiffProvider.php,Sync/DiffProvider/Item/BaseDiffItem.php ./
