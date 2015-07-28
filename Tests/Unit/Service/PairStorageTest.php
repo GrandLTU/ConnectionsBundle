@@ -13,9 +13,8 @@ namespace ONGR\ConnectionsBundle\Tests\Unit\Service;
 
 use ONGR\ConnectionsBundle\Document\Pair;
 use ONGR\ConnectionsBundle\Service\PairStorage;
-use ONGR\ElasticsearchBundle\ORM\Manager;
-use ONGR\ElasticsearchBundle\ORM\Repository;
-use Elasticsearch\Common\Exceptions\Missing404Exception;
+use ONGR\ElasticsearchBundle\Service\Manager;
+use ONGR\ElasticsearchBundle\Service\Repository;
 
 class PairStorageTest extends \PHPUnit_Framework_TestCase
 {
@@ -231,7 +230,7 @@ class PairStorageTest extends \PHPUnit_Framework_TestCase
     protected function getOrmManagerMock()
     {
         return $this->getMock(
-            'ONGR\ElasticsearchBundle\ORM\Manager',
+            'ONGR\ElasticsearchBundle\Service\Manager',
             [],
             [],
             '',
@@ -247,7 +246,7 @@ class PairStorageTest extends \PHPUnit_Framework_TestCase
     protected function getOrmRepositoryMock()
     {
         $mock = $this->getMock(
-            'ONGR\ElasticsearchBundle\ORM\Repository',
+            'ONGR\ElasticsearchBundle\Service\Repository',
             [],
             [],
             '',

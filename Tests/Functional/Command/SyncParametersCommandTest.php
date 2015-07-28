@@ -12,12 +12,13 @@
 namespace ONGR\ConnectionsBundle\Tests\Functional\Command;
 
 use ONGR\ConnectionsBundle\Command\SyncParametersCommand;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Tester\CommandTester;
-use ONGR\ElasticsearchBundle\ORM\Manager;
-use ONGR\ElasticsearchBundle\ORM\Repository;
+use ONGR\ElasticsearchBundle\Service\Manager;
+use ONGR\ElasticsearchBundle\Service\Repository;
+use ONGR\ElasticsearchBundle\Test\DelayedObjectWrapper;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * Integration test for ongr:sync:provide:parameter command.
@@ -56,7 +57,7 @@ class SyncParametersCommandTest extends WebTestCase
         $application->add(new SyncParametersCommand());
         $this->command = $application->find('ongr:sync:provide:parameter');
 
-        $this->commandTester = new CommandTester($this->command);
+        $this->commandTester = DelayedObjectWrapper::wrap(new CommandTester($this->command));
     }
 
     /**

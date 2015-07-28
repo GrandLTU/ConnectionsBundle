@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use ONGR\ConnectionsBundle\Pipeline\Event\SourcePipelineEvent;
 use ONGR\ConnectionsBundle\Sync\SyncStorage\SyncStorageInterface;
 use ONGR\ConnectionsBundle\Sync\SyncStorageImportIterator;
-use ONGR\ElasticsearchBundle\ORM\Manager;
+use ONGR\ElasticsearchBundle\Service\Manager;
 
 /**
  * Class SyncExecuteSourceEventListener - creates iterator which provides modified entities.

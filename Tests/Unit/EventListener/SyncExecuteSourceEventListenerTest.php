@@ -14,7 +14,7 @@ namespace ONGR\ConnectionsBundle\Tests\Unit\EventListener;
 use Doctrine\ORM\EntityManager;
 use ONGR\ConnectionsBundle\EventListener\SyncExecuteSourceEventListener;
 use ONGR\ConnectionsBundle\Sync\SyncStorage\SyncStorage;
-use ONGR\ElasticsearchBundle\ORM\Manager;
+use ONGR\ElasticsearchBundle\Service\Manager;
 
 class SyncExecuteSourceEventListenerTest extends \PHPUnit_Framework_TestCase
 {
@@ -80,7 +80,7 @@ class SyncExecuteSourceEventListenerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->elasticsearchManager = $this->getMockBuilder('ONGR\ElasticsearchBundle\ORM\Manager')
+        $this->elasticsearchManager = $this->getMockBuilder('ONGR\ElasticsearchBundle\Service\Manager')
             ->disableOriginalConstructor()
             ->getMock();
 

@@ -13,8 +13,8 @@ namespace ONGR\ConnectionsBundle\Service;
 
 use ONGR\ConnectionsBundle\Document\Pair;
 use ONGR\ElasticsearchBundle\Document\DocumentInterface;
-use ONGR\ElasticsearchBundle\ORM\Manager;
-use ONGR\ElasticsearchBundle\ORM\Repository;
+use ONGR\ElasticsearchBundle\Service\Manager;
+use ONGR\ElasticsearchBundle\Service\Repository;
 
 /**
  * Responsible for managing pairs actions.

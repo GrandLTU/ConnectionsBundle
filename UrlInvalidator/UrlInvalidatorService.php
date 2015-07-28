@@ -11,10 +11,10 @@
 
 namespace ONGR\ConnectionsBundle\UrlInvalidator;
 
-use ONGR\ElasticsearchBundle\DSL\Filter\LimitFilter;
-use ONGR\ElasticsearchBundle\DSL\Query\Query;
-use ONGR\ElasticsearchBundle\DSL\Query\TermQuery;
-use ONGR\ElasticsearchBundle\ORM\Manager;
+use ONGR\ElasticsearchBundle\Service\Manager;
+use ONGR\ElasticsearchDSL\Filter\LimitFilter;
+use ONGR\ElasticsearchDSL\Query\Query;
+use ONGR\ElasticsearchDSL\Query\TermQuery;
 use ONGR\RouterBundle\Document\SeoAwareInterface;
 use ONGR\RouterBundle\Document\UrlObject;
 use Symfony\Component\Process\Process;

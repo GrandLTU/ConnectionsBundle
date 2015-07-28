@@ -33,12 +33,12 @@ class SyncExecuteConsumeEventListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testOnConsume($documentType, $eventItem, $loggerNotice, $managerMethod)
     {
-        $repo = $this->getMockBuilder('ONGR\ElasticsearchBundle\ORM\Repository')
+        $repo = $this->getMockBuilder('ONGR\ElasticsearchBundle\Service\Repository')
             ->disableOriginalConstructor()
             ->setMethods(['remove'])
             ->getMock();
 
-        $manager = $this->getMockBuilder('ONGR\ElasticsearchBundle\ORM\Manager')
+        $manager = $this->getMockBuilder('ONGR\ElasticsearchBundle\Service\Manager')
             ->disableOriginalConstructor()
             ->setMethods(['persist', 'getRepository'])
             ->getMock();

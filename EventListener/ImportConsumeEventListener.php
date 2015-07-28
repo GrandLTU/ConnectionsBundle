@@ -11,7 +11,7 @@
 
 namespace ONGR\ConnectionsBundle\EventListener;
 
-use ONGR\ElasticsearchBundle\ORM\Manager;
+use ONGR\ElasticsearchBundle\Service\Manager;
 use Psr\Log\LoggerAwareInterface;
 
 /**

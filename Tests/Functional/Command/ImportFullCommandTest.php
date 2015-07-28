@@ -23,6 +23,16 @@ use Symfony\Component\Console\Tester\CommandTester;
 class ImportFullCommandTest extends AbstractESDoctrineTestCase
 {
     /**
+     * Returns number of retries tests should execute.
+     *
+     * @return int
+     */
+    protected function getNumberOfRetries()
+    {
+        return 5;
+    }
+
+    /**
      * Check if a document is saved as expected after collecting data from providers.
      */
     public function testExecute()
@@ -41,16 +51,11 @@ class ImportFullCommandTest extends AbstractESDoctrineTestCase
         $commandTester->execute(['command' => $command->getName()]);
         $search = $repository->createSearch();
 
-        // Temporary workaround for ESB issue #34 (https://github.com/ongr-io/ElasticsearchBundle/issues/34).
-        usleep(90000);
-
         foreach ($repository->execute($search) as $document) {
             $actualDocuments[] = $document;
         }
 
-        /** @var Product $expectedDocument */
-        $expectedDocument = $repository->createDocument();
-        $expectedDocument->__setInitialized(true);
+        $expectedDocument = new Product();
         $expectedDocument->setId('1');
         $expectedDocument->setTitle('test_prod');
         $expectedDocument->setPrice('0.99');
@@ -59,8 +64,7 @@ class ImportFullCommandTest extends AbstractESDoctrineTestCase
 
         $expectedDocuments[] = $expectedDocument;
 
-        $expectedDocument = $repository->createDocument();
-        $expectedDocument->__setInitialized(true);
+        $expectedDocument = new Product();
         $expectedDocument->setId('2');
         $expectedDocument->setTitle('test_prod2');
         $expectedDocument->setPrice('7.79');

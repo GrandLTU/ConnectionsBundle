@@ -15,7 +15,7 @@ use ONGR\ConnectionsBundle\Pipeline\Event\FinishPipelineEvent;
 use ONGR\ConnectionsBundle\Pipeline\Event\ItemPipelineEvent;
 use ONGR\ConnectionsBundle\UrlInvalidator\AbstractItemUrlInvalidator;
 use ONGR\ConnectionsBundle\UrlInvalidator\UrlInvalidatorService;
-use ONGR\ElasticsearchBundle\ORM\Manager;
+use ONGR\ElasticsearchBundle\Service\Manager;
 use Symfony\Component\Routing\RouterInterface;
 
 class ItemUrlInvalidatorTest extends \PHPUnit_Framework_TestCase
@@ -30,7 +30,7 @@ class ItemUrlInvalidatorTest extends \PHPUnit_Framework_TestCase
 
         /** @var Manager|\PHPUnit_Framework_MockObject_MockObject $manager */
         $manager = $this->getMockForAbstractClass(
-            'ONGR\ElasticsearchBundle\ORM\Manager',
+            'ONGR\ElasticsearchBundle\Service\Manager',
             [null, null]
         );
 

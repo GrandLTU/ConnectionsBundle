@@ -13,7 +13,7 @@ namespace ONGR\ConnectionsBundle\Import;
 
 use Doctrine\ORM\EntityManagerInterface;
 use ONGR\ConnectionsBundle\Pipeline\Item\ImportItem;
-use ONGR\ElasticsearchBundle\ORM\Repository;
+use ONGR\ElasticsearchBundle\Service\Repository;
 use Traversable;
 
 /**
@@ -50,8 +50,10 @@ class DoctrineImportIterator extends \IteratorIterator
     public function current()
     {
         $doctrineEntity = parent::current();
+        $class = $this->repository->getDocumentsClass();
+        $class = reset($class);
 
-        return new ImportItem($doctrineEntity[0], $this->repository->createDocument());
+        return new ImportItem($doctrineEntity[0], new $class());
     }
 
     /**

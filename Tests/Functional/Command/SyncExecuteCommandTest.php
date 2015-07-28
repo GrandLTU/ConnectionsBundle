@@ -68,11 +68,8 @@ class SyncExecuteCommandTest extends AbstractESDoctrineTestCase
     {
         $productDocuments = [];
         foreach ($products as $product) {
-            $repository = $this->getManager()->getRepository('AcmeTestBundle:Product');
-
             /** @var Product $productDocument */
-            $productDocument = $repository->createDocument();
-            $productDocument->__setInitialized(true);
+            $productDocument = new Product();
             $productDocument->setId($product['id']);
             $productDocument->setTitle($product['title']);
             $productDocument->setPrice($product['price']);

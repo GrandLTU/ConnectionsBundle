@@ -14,7 +14,7 @@ namespace ONGR\ConnectionsBundle\EventListener;
 use ONGR\ConnectionsBundle\Log\EventLoggerAwareTrait;
 use ONGR\ConnectionsBundle\Pipeline\Event\ItemPipelineEvent;
 use ONGR\ConnectionsBundle\Pipeline\Item\AbstractImportItem;
-use ONGR\ElasticsearchBundle\ORM\Manager;
+use ONGR\ElasticsearchBundle\Service\Manager;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LogLevel;
 

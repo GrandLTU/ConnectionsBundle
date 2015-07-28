@@ -13,11 +13,10 @@ namespace ONGR\ConnectionsBundle\Tests\Functional\Service;
 
 use ONGR\ConnectionsBundle\Document\Pair;
 use ONGR\ConnectionsBundle\Service\PairStorage;
+use ONGR\ElasticsearchBundle\Service\Manager;
+use ONGR\ElasticsearchDSL\Query\MatchAllQuery;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use ONGR\ElasticsearchBundle\ORM\Manager;
-use ONGR\ElasticsearchBundle\DSL\Query\MatchAllQuery;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use ONGR\ElasticsearchBundle\ORM\Repository;
 
 class PairStorageTest extends WebTestCase
 {
@@ -48,8 +47,8 @@ class PairStorageTest extends WebTestCase
         $repository = $this->manager->getRepository('ONGRConnectionsBundle:Pair');
 
         $search = $repository
-            ->createSearch()
-            ->addQuery(new MatchAllQuery());
+            ->createSearch();
+        $search->addQuery(new MatchAllQuery());
         $documents = $repository->execute($search);
 
         $expected = [$pair1, $pair2];
@@ -147,12 +146,8 @@ class PairStorageTest extends WebTestCase
      */
     private function getPair($key, $value)
     {
-        /** @var Repository $repository */
-        $repository = $this->manager->getRepository('ONGRConnectionsBundle:Pair');
-
         /** @var Pair $pair */
-        $pair = $repository->createDocument();
-        $pair->__setInitialized(true);
+        $pair = new Pair();
         $pair->setId($key);
         $pair->setValue($value);
         $pair->setScore(1.0);

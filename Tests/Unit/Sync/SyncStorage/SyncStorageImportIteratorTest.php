@@ -16,7 +16,7 @@ use Doctrine\ORM\EntityRepository;
 use ONGR\ConnectionsBundle\Sync\ActionTypes;
 use ONGR\ConnectionsBundle\Sync\SyncStorage\SyncStorage;
 use ONGR\ConnectionsBundle\Sync\SyncStorageImportIterator;
-use ONGR\ElasticsearchBundle\ORM\Repository;
+use ONGR\ElasticsearchBundle\Service\Repository;
 
 class SyncStorageImportIteratorTest extends \PHPUnit_Framework_TestCase
 {
@@ -57,7 +57,7 @@ class SyncStorageImportIteratorTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $this->entityManager->expects($this->once())->method('getRepository')->willReturn($this->entityRepository);
 
-        $this->elasticsearchRepository = $this->getMockBuilder('ONGR\ElasticsearchBundle\ORM\Repository')
+        $this->elasticsearchRepository = $this->getMockBuilder('ONGR\ElasticsearchBundle\Service\Repository')
             ->disableOriginalConstructor()
             ->getMock();
 

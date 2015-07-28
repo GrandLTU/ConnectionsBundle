@@ -15,14 +15,14 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManager;
-use ONGR\ElasticsearchBundle\Test\ElasticsearchTestCase;
+use ONGR\ElasticsearchBundle\Test\AbstractElasticsearchTestCase;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Base function test class. Sets up both Doctrine and Elasticsearch environments for tests.
  */
-abstract class AbstractESDoctrineTestCase extends ElasticsearchTestCase
+abstract class AbstractESDoctrineTestCase extends AbstractElasticsearchTestCase
 {
     /**
      * @var ContainerInterface

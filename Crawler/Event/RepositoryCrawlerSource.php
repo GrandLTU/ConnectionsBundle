@@ -12,9 +12,10 @@ namespace ONGR\ConnectionsBundle\Crawler\Event;
 
 use ONGR\ConnectionsBundle\EventListener\AbstractCrawlerSource;
 use ONGR\ConnectionsBundle\Pipeline\Event\SourcePipelineEvent;
-use ONGR\ElasticsearchBundle\DSL\Query\MatchAllQuery;
-use ONGR\ElasticsearchBundle\ORM\Manager;
-use ONGR\ElasticsearchBundle\ORM\Repository;
+use ONGR\ElasticsearchBundle\Result\DocumentIterator;
+use ONGR\ElasticsearchBundle\Service\Manager;
+use ONGR\ElasticsearchBundle\Service\Repository;
+use ONGR\ElasticsearchDSL\Query\MatchAllQuery;
 
 /**
  * Provides data from Elasticsearch repository.
@@ -62,9 +63,10 @@ class RepositoryCrawlerSource extends AbstractCrawlerSource
         $matchAllQuery = new MatchAllQuery();
         $search = $this->repository
             ->createSearch()
-            ->addQuery($matchAllQuery)
             ->setScroll($this->getScrollSetting())
             ->setSearchType('scan');
+        $search->addQuery($matchAllQuery);
+
         $documents = $this->repository->execute($search);
 
         return $documents;

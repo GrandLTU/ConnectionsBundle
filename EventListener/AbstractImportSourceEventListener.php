@@ -14,7 +14,7 @@ namespace ONGR\ConnectionsBundle\EventListener;
 use Doctrine\ORM\EntityManager;
 use ONGR\ConnectionsBundle\Log\EventLoggerAwareTrait;
 use ONGR\ConnectionsBundle\Pipeline\Event\SourcePipelineEvent;
-use ONGR\ElasticsearchBundle\ORM\Manager;
+use ONGR\ElasticsearchBundle\Service\Manager;
 use Psr\Log\LoggerAwareInterface;
 
 /**

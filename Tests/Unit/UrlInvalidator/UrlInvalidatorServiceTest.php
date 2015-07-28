@@ -13,7 +13,7 @@ namespace ONGR\ConnectionsBundle\Tests\Unit\UrlInvalidator;
 
 use ONGR\ConnectionsBundle\UrlInvalidator\DocumentUrlCollectorInterface;
 use ONGR\ConnectionsBundle\UrlInvalidator\UrlInvalidatorService;
-use ONGR\ElasticsearchBundle\ORM\Manager;
+use ONGR\ElasticsearchBundle\Service\Manager;
 use ONGR\RouterBundle\Document\SeoAwareInterface;
 use ONGR\RouterBundle\Document\UrlObject;
 use ReflectionClass;
@@ -34,7 +34,7 @@ class UrlInvalidatorServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->manager = $this->getMockBuilder('ONGR\ElasticsearchBundle\ORM\Manager')
+        $this->manager = $this->getMockBuilder('ONGR\ElasticsearchBundle\Service\Manager')
             ->disableOriginalConstructor()
             ->setMethods(['getRepository'])
             ->getMock();

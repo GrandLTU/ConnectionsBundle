@@ -14,7 +14,7 @@ namespace ONGR\ConnectionsBundle\Sync;
 use Doctrine\ORM\EntityManagerInterface;
 use ONGR\ConnectionsBundle\Pipeline\Item\SyncExecuteItem;
 use ONGR\ConnectionsBundle\Sync\SyncStorage\SyncStorage;
-use ONGR\ElasticsearchBundle\ORM\Repository;
+use ONGR\ElasticsearchBundle\Service\Repository;
 
 /**
  * This class is able to iterate over entities without storing objects in memory.
@@ -99,9 +99,11 @@ class SyncStorageImportIterator implements \Iterator
      */
     public function current()
     {
+        $class = $this->repository->getDocumentsClass(null);
+
         return new SyncExecuteItem(
             $this->currentEntity,
-            $this->repository->createDocument(),
+            new $class(),
             $this->currentChunk[0]
         );
     }
