@@ -186,7 +186,7 @@ class Configuration implements ConfigurationInterface
                     ->arrayNode('modifiers')
                         ->prototype('scalar')->end()
                         ->defaultValue(
-                            ['ONGR\ConnectionsBundle\EventListener\ModifyEventListener']
+                            ['ONGR\ConnectionsBundle\EventListener\MappedModifyEventListener']
                         )
                     ->end()
                     ->arrayNode('import_consumers')
@@ -217,6 +217,10 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                                 ->scalarNode('document_class')
                                     ->isRequired()
+                                ->end()
+                                ->arrayNode('map')
+                                    ->useAttributeAsKey('name')
+                                    ->prototype('scalar')->end()
                                 ->end()
                                 ->arrayNode('config')
                                     ->prototype('variable')->end()

@@ -353,6 +353,7 @@ class ONGRConnectionsExtension extends Extension
                 'entity_class' => $typeConfig['entity_class'],
                 'document_class' => $typeConfig['document_class'],
                 'document_type' => $type,
+                'map' => $typeConfig['map'],
             ]
         );
     }

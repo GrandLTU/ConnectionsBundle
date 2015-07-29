@@ -45,7 +45,7 @@ class ONGRConnectionsExtensionTest extends \PHPUnit_Framework_TestCase
                             'content' => [
                                 'entity_class' => 'TestBundle:Content',
                                 'document_class' => 'TestBundle:Content',
-                                'modifiers' => ['ONGR\ConnectionsBundle\EventListener\ModifyEventListener'],
+                                'modifiers' => ['ONGR\ConnectionsBundle\EventListener\MappedModifyEventListener'],
                             ],
                         ],
                     ],
@@ -123,13 +123,16 @@ class ONGRConnectionsExtensionTest extends \PHPUnit_Framework_TestCase
                 ),
 
                 'ongr_connections.pipelines.import.test.content.modify.0' => (new Definition(
-                    'ONGR\ConnectionsBundle\EventListener\ModifyEventListener'
+                    'ONGR\ConnectionsBundle\EventListener\MappedModifyEventListener'
                 ))->addTag(
                     'kernel.event_listener',
                     ['event' => 'ongr.pipeline.import.test.content.modify', 'method' => 'onModify']
                 )->addTag(
                     'kernel.event_listener',
                     ['event' => 'ongr.pipeline.sync.execute.test.content.modify', 'method' => 'onModify']
+                )->addMethodCall(
+                    'setMap',
+                    [[]]
                 ),
 
                 'ongr_connections.pipelines.import.test.content.consume.0' => (new Definition(
@@ -172,13 +175,16 @@ class ONGRConnectionsExtensionTest extends \PHPUnit_Framework_TestCase
                 ),
 
                 'ongr_connections.pipelines.import.test.content.modify.1' => (new Definition(
-                    'ONGR\ConnectionsBundle\EventListener\ModifyEventListener'
+                    'ONGR\ConnectionsBundle\EventListener\MappedModifyEventListener'
                 ))->addTag(
                     'kernel.event_listener',
                     ['event' => 'ongr.pipeline.import.test.content.modify', 'method' => 'onModify']
                 )->addTag(
                     'kernel.event_listener',
                     ['event' => 'ongr.pipeline.sync.execute.test.content.modify', 'method' => 'onModify']
+                )->addMethodCall(
+                    'setMap',
+                    [[]]
                 ),
             ],
         ];

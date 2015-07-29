@@ -11,7 +11,9 @@
 
 namespace ONGR\ConnectionsBundle\Tests\Unit\Event;
 
+use ONGR\ConnectionsBundle\EventListener\AbstractImportModifyEventListener;
 use ONGR\ConnectionsBundle\Pipeline\Event\ItemPipelineEvent;
+use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
 /**
@@ -30,6 +32,7 @@ class AbstractImportModifyEventListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testOnConsume($eventItem, $message, $level)
     {
+        /** @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject $logger */
         $logger = $this->getMockBuilder('Psr\Log\LoggerInterface')
             ->setMethods(['log'])
             ->getMockForAbstractClass();
@@ -38,6 +41,7 @@ class AbstractImportModifyEventListenerTest extends \PHPUnit_Framework_TestCase
             ->method('log')
             ->with($level, $this->equalTo($message), []);
 
+        /** @var AbstractImportModifyEventListener|\PHPUnit_Framework_MockObject_MockObject $listener */
         $listener = $this->getMockBuilder('ONGR\ConnectionsBundle\EventListener\AbstractImportModifyEventListener')
             ->getMockForAbstractClass();
 
