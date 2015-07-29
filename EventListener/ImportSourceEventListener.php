@@ -29,7 +29,8 @@ class ImportSourceEventListener extends AbstractImportSourceEventListener
         return new DoctrineImportIterator(
             $this->getDoctrineManager()->createQuery("SELECT e FROM {$this->getentityClass()} e")->iterate(),
             $this->getDoctrineManager(),
-            $this->getElasticsearchManager()->getRepository($this->getDocumentClass())
+            $this->getElasticsearchManager()->getRepository($this->getDocumentClass()),
+            $this->getDocumentClass()
         );
     }
 

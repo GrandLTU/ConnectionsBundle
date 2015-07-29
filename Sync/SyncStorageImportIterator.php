@@ -99,11 +99,12 @@ class SyncStorageImportIterator implements \Iterator
      */
     public function current()
     {
-        $class = $this->repository->getDocumentsClass(null);
+        $class = $this->repository->getManager()->getTypesMapping();
 
         return new SyncExecuteItem(
             $this->currentEntity,
-            new $class(),
+            [],
+            $class[$this->documentType],
             $this->currentChunk[0]
         );
     }

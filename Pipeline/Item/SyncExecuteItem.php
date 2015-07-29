@@ -11,8 +11,6 @@
 
 namespace ONGR\ConnectionsBundle\Pipeline\Item;
 
-use ONGR\ElasticsearchBundle\Document\DocumentInterface;
-
 /**
  * Import event item carrying both Doctrine entity and ES document.
  */
@@ -24,13 +22,14 @@ class SyncExecuteItem extends AbstractImportItem
     protected $syncStorageData;
 
     /**
-     * @param mixed             $entity
-     * @param DocumentInterface $document
-     * @param array             $syncStorageData
+     * @param mixed  $entity
+     * @param array  $document
+     * @param string $documentClass
+     * @param array  $syncStorageData
      */
-    public function __construct($entity, DocumentInterface $document, $syncStorageData)
+    public function __construct($entity, array $document, $documentClass, $syncStorageData)
     {
-        parent::__construct($entity, $document);
+        parent::__construct($entity, $document, $documentClass);
         $this->syncStorageData = $syncStorageData;
     }
 

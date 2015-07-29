@@ -13,7 +13,6 @@ namespace ONGR\ConnectionsBundle\Tests\Unit\Event;
 
 use ONGR\ConnectionsBundle\Pipeline\Item\SyncExecuteItem;
 use ONGR\ConnectionsBundle\Sync\ActionTypes;
-use ONGR\ConnectionsBundle\Tests\Functional\Fixtures\Bundles\Acme\TestBundle\Document\Product;
 use ONGR\ConnectionsBundle\Tests\Functional\Fixtures\ImportCommandTest\TestProduct;
 
 class SyncExecuteItemTest extends \PHPUnit_Framework_TestCase
@@ -24,9 +23,8 @@ class SyncExecuteItemTest extends \PHPUnit_Framework_TestCase
     public function testSyncStorageDataGetterSetter()
     {
         $entity = new TestProduct();
-        $document = new Product();
         $syncStorageData = [];
-        $syncImportItem = new SyncExecuteItem($entity, $document, $syncStorageData);
+        $syncImportItem = new SyncExecuteItem($entity, [], 'AcmeTestBundle:Product', $syncStorageData);
         $syncStorageData = [
             'id' => '1',
             'type' => ActionTypes::CREATE,

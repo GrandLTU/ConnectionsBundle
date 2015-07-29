@@ -12,8 +12,6 @@
 namespace ONGR\ConnectionsBundle\Tests\Unit\Fixtures\Import;
 
 use ONGR\ConnectionsBundle\EventListener\AbstractImportModifyEventListener;
-use ONGR\ConnectionsBundle\Pipeline\Event\ItemPipelineEvent;
-use ONGR\ConnectionsBundle\Pipeline\Item\AbstractImportItem;
 
 /**
  * Implementation of InitialSyncModifyEventListener.
@@ -21,12 +19,11 @@ use ONGR\ConnectionsBundle\Pipeline\Item\AbstractImportItem;
 class TestModifyEventListener extends AbstractImportModifyEventListener
 {
     /**
-     * Does nothing.
-     *
-     * @param AbstractImportItem $eventItem
-     * @param ItemPipelineEvent  $event
+     * {@inheritdoc}
      */
-    protected function modify(AbstractImportItem $eventItem, ItemPipelineEvent $event)
+    protected function transform(array $document, $documentClass, $entity)
     {
+        return $document;
     }
+
 }

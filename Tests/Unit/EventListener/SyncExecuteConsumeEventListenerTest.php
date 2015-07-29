@@ -15,8 +15,9 @@ use ONGR\ConnectionsBundle\EventListener\SyncExecuteConsumeEventListener;
 use ONGR\ConnectionsBundle\Pipeline\Event\ItemPipelineEvent;
 use ONGR\ConnectionsBundle\Pipeline\Item\SyncExecuteItem;
 use ONGR\ConnectionsBundle\Sync\ActionTypes;
-use ONGR\ConnectionsBundle\Tests\Functional\Fixtures\Bundles\Acme\TestBundle\Document\Product;
 use ONGR\ConnectionsBundle\Tests\Functional\Fixtures\ImportCommandTest\TestProduct;
+use ONGR\ElasticsearchBundle\Client\Connection;
+use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
 class SyncExecuteConsumeEventListenerTest extends \PHPUnit_Framework_TestCase
@@ -38,13 +39,24 @@ class SyncExecuteConsumeEventListenerTest extends \PHPUnit_Framework_TestCase
             ->setMethods(['remove'])
             ->getMock();
 
+        /** @var Connection|\PHPUnit_Framework_MockObject_MockObject $connection */
+        $connection = $this->getMockBuilder('ONGR\ElasticsearchBundle\Client\Connection')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $manager = $this->getMockBuilder('ONGR\ElasticsearchBundle\Service\Manager')
             ->disableOriginalConstructor()
-            ->setMethods(['persist', 'getRepository'])
+            ->setMethods(['persist', 'getRepository', 'getConnection', 'getBundlesMapping', 'persistRaw'])
             ->getMock();
 
         $manager->method('getRepository')
             ->willReturn($repo);
+
+        $manager->method('getConnection')
+            ->willReturn($connection);
+
+        $manager->method('getBundlesMapping')
+            ->willReturn(['AcmeTestBundle:Product' => null]);
 
         $syncStorage = $this->getMockBuilder('ONGR\ConnectionsBundle\Sync\SyncStorage\SyncStorage')
             ->disableOriginalConstructor()
@@ -55,6 +67,7 @@ class SyncExecuteConsumeEventListenerTest extends \PHPUnit_Framework_TestCase
                 ->method($managerMethod);
         }
 
+        /** @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject $logger */
         $logger = $this->getMockBuilder('Psr\Log\LoggerInterface')
             ->setMethods(['log'])
             ->getMockForAbstractClass();
@@ -86,9 +99,9 @@ class SyncExecuteConsumeEventListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function onConsumeDataProvider()
     {
-        $product = new Product();
-        $documentId = '123';
-        $product->setId($documentId);
+        $product = [
+            '_id' => '123',
+        ];
 
         return [
             [
@@ -96,6 +109,7 @@ class SyncExecuteConsumeEventListenerTest extends \PHPUnit_Framework_TestCase
                 'event_item' => new SyncExecuteItem(
                     new TestProduct(),
                     $product,
+                    'AcmeTestBundle:Product',
                     [
                         'type' => ActionTypes::DELETE,
                         'id' => 1,
@@ -106,8 +120,8 @@ class SyncExecuteConsumeEventListenerTest extends \PHPUnit_Framework_TestCase
                     [
                         sprintf(
                             'Start update single document of type %s id: %s',
-                            get_class($product),
-                            $product->getId()
+                            'AcmeTestBundle:Product',
+                            123
                         ),
                         LogLevel::DEBUG,
                     ],
@@ -123,6 +137,7 @@ class SyncExecuteConsumeEventListenerTest extends \PHPUnit_Framework_TestCase
                 'event_item' => new SyncExecuteItem(
                     new TestProduct(),
                     $product,
+                    'AcmeTestBundle:Product',
                     [
                         'type' => ActionTypes::UPDATE,
                         'id' => 1,
@@ -133,8 +148,8 @@ class SyncExecuteConsumeEventListenerTest extends \PHPUnit_Framework_TestCase
                     [
                         sprintf(
                             'Start update single document of type %s id: %s',
-                            get_class($product),
-                            $product->getId()
+                            'AcmeTestBundle:Product',
+                            123
                         ),
                         LogLevel::DEBUG,
                     ],
@@ -143,13 +158,14 @@ class SyncExecuteConsumeEventListenerTest extends \PHPUnit_Framework_TestCase
                         LogLevel::DEBUG,
                     ],
                 ],
-                'managerMethod' => 'persist',
+                'managerMethod' => 'persistRaw',
             ],
             [
                 'document_type' => 'product',
                 'event_item' => new SyncExecuteItem(
                     new TestProduct(),
                     $product,
+                    'AcmeTestBundle:Product',
                     [
                         'type' => ActionTypes::CREATE,
                         'id' => 1,
@@ -160,8 +176,8 @@ class SyncExecuteConsumeEventListenerTest extends \PHPUnit_Framework_TestCase
                     [
                         sprintf(
                             'Start update single document of type %s id: %s',
-                            get_class($product),
-                            $product->getId()
+                            'AcmeTestBundle:Product',
+                            123
                         ),
                         LogLevel::DEBUG,
                     ],
@@ -170,25 +186,30 @@ class SyncExecuteConsumeEventListenerTest extends \PHPUnit_Framework_TestCase
                         LogLevel::DEBUG,
                     ],
                 ],
-                'managerMethod' => 'persist',
+                'managerMethod' => 'persistRaw',
             ],
             [
                 'document_type' => 'product',
-                'event_item' => new SyncExecuteItem(new TestProduct(), $product, ['type' => '']),
+                'event_item' => new SyncExecuteItem(
+                    new TestProduct(),
+                    $product,
+                    'AcmeTestBundle:Product',
+                    ['type' => '']
+                ),
                 'logger_notice' => [
                     [
                         sprintf(
                             'Start update single document of type %s id: %s',
-                            get_class($product),
-                            $product->getId()
+                            'AcmeTestBundle:Product',
+                            123
                         ),
                         LogLevel::DEBUG,
                     ],
                     [
                         sprintf(
                             'Failed to update document of type  %s id: %s: no valid operation type defined',
-                            get_class($product),
-                            $product->getId()
+                            'AcmeTestBundle:Product',
+                            123
                         ),
                         LogLevel::DEBUG,
                     ],
@@ -197,8 +218,8 @@ class SyncExecuteConsumeEventListenerTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 'document_type' => 'product',
-                'event_item' => new SyncExecuteItem(new TestProduct(), $product, []),
-                'logger_notice' => [["No operation type defined for document id: {$documentId}", LogLevel::ERROR]],
+                'event_item' => new SyncExecuteItem(new TestProduct(), $product, 'AcmeTestBundle:Product', []),
+                'logger_notice' => [['No operation type defined for document id: 123', LogLevel::ERROR]],
                 'managerMethod' => null,
             ],
             [

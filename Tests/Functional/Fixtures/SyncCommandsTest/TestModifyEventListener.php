@@ -12,9 +12,6 @@
 namespace ONGR\ConnectionsBundle\Tests\Functional\Fixtures\SyncCommandsTest;
 
 use ONGR\ConnectionsBundle\EventListener\AbstractImportModifyEventListener;
-use ONGR\ConnectionsBundle\Pipeline\Item\AbstractImportItem;
-use ONGR\ConnectionsBundle\Pipeline\Event\ItemPipelineEvent;
-use ONGR\ConnectionsBundle\Tests\Functional\Fixtures\Bundles\Acme\TestBundle\Document\Product;
 
 /**
  * Implementation of InitialSyncModifyEventListener.
@@ -22,23 +19,19 @@ use ONGR\ConnectionsBundle\Tests\Functional\Fixtures\Bundles\Acme\TestBundle\Doc
 class TestModifyEventListener extends AbstractImportModifyEventListener
 {
     /**
-     * Assigns data in entity to relevant fields in document.
-     *
-     * @param AbstractImportItem $eventItem
-     * @param ItemPipelineEvent  $event
+     * {@inheritdoc}
      */
-    protected function modify(AbstractImportItem $eventItem, ItemPipelineEvent $event)
+    protected function transform(array $document, $documentClass, $entity)
     {
-        /** @var TestProduct $data */
-        $data = $eventItem->getEntity();
-        if ($data === null) {
-            return;
+        if ($entity === null) {
+            return $document;
         }
-        /** @var Product $document */
-        $document = $eventItem->getDocument();
-        $document->setId($data->id);
-        $document->setTitle($data->title);
-        $document->setPrice($data->price);
-        $document->setDescription($data->description);
+
+        $document['_id'] = $entity->id;
+        $document['title'] = $entity->title;
+        $document['price'] = $entity->price;
+        $document['description'] = $entity->description;
+
+        return $document;
     }
 }

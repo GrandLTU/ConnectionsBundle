@@ -32,14 +32,25 @@ class DoctrineImportIterator extends \IteratorIterator
     private $repository;
 
     /**
+     * @var string
+     */
+    private $documentClass;
+
+    /**
      * @param Traversable            $iterator
      * @param EntityManagerInterface $manager
      * @param Repository             $repository
+     * @param string                 $documentClass
      */
-    public function __construct(Traversable $iterator, EntityManagerInterface $manager, Repository $repository)
-    {
+    public function __construct(
+        Traversable $iterator,
+        EntityManagerInterface $manager,
+        Repository $repository,
+        $documentClass
+    ) {
         $this->repository = $repository;
         $this->manager = $manager;
+        $this->documentClass = $documentClass;
 
         parent::__construct($iterator);
     }
@@ -50,10 +61,8 @@ class DoctrineImportIterator extends \IteratorIterator
     public function current()
     {
         $doctrineEntity = parent::current();
-        $class = $this->repository->getDocumentsClass();
-        $class = reset($class);
 
-        return new ImportItem($doctrineEntity[0], new $class());
+        return new ImportItem($doctrineEntity[0], [], $this->getDocumentClass());
     }
 
     /**
@@ -63,5 +72,25 @@ class DoctrineImportIterator extends \IteratorIterator
     {
         $this->manager->clear();
         parent::next();
+    }
+
+    /**
+     * @return string
+     */
+    public function getDocumentClass()
+    {
+        return $this->documentClass;
+    }
+
+    /**
+     * @param string $documentClass
+     *
+     * @return $this
+     */
+    public function setDocumentClass($documentClass)
+    {
+        $this->documentClass = $documentClass;
+
+        return $this;
     }
 }

@@ -143,7 +143,7 @@ class SyncExecuteConsumeEventListener extends AbstractImportConsumeEventListener
 
         if (!isset($tempSyncStorageData['type'])) {
             $this->log(
-                sprintf('No operation type defined for document id: %s', $item->getDocument()->getId()),
+                sprintf('No operation type defined for document id: %s', $item->getDocument()['_id']),
                 LogLevel::ERROR
             );
 
@@ -162,22 +162,23 @@ class SyncExecuteConsumeEventListener extends AbstractImportConsumeEventListener
         $syncStorageData = $this->getSyncStorageData();
         switch ($syncStorageData['type']) {
             case ActionTypes::CREATE:
-                $this->getElasticsearchManager()->persist($this->getItem()->getDocument());
-                break;
             case ActionTypes::UPDATE:
-                $this->getElasticsearchManager()->persist($this->getItem()->getDocument());
+                $this->getElasticsearchManager()->persistRaw(
+                    $this->getItem()->getDocument(),
+                    $this->getItem()->getDocumentClass()
+                );
                 break;
             case ActionTypes::DELETE:
                 $this->getElasticsearchManager()->getRepository($this->getDocumentClass())->remove(
-                    $this->getItem()->getDocument()->getId()
+                    $this->getItem()->getDocument()['_id']
                 );
                 break;
             default:
                 $this->log(
                     sprintf(
                         'Failed to update document of type  %s id: %s: no valid operation type defined',
-                        get_class($this->getItem()->getDocument()),
-                        $this->getItem()->getDocument()->getId()
+                        $this->getItem()->getDocumentClass(),
+                        $this->getItem()->getDocument()['_id']
                     )
                 );
 

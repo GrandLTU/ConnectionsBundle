@@ -64,8 +64,8 @@ abstract class AbstractImportConsumeEventListener extends AbstractConsumeEventLi
         $this->log(
             sprintf(
                 'Start update single document of type %s id: %s',
-                get_class($this->getItem()->getDocument()),
-                $this->getItem()->getDocument()->getId()
+                $this->getItem()->getDocumentClass(),
+                $this->getItem()->getDocument()['_id']
             )
         );
 
@@ -83,7 +83,10 @@ abstract class AbstractImportConsumeEventListener extends AbstractConsumeEventLi
      */
     protected function persistDocument()
     {
-        $this->getElasticsearchManager()->persist($this->getItem()->getDocument());
+        $this->getElasticsearchManager()->persistRaw(
+            $this->getItem()->getDocument(),
+            $this->getItem()->getDocumentClass()
+        );
 
         return true;
     }

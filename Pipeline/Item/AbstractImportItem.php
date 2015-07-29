@@ -11,8 +11,6 @@
 
 namespace ONGR\ConnectionsBundle\Pipeline\Item;
 
-use ONGR\ElasticsearchBundle\Document\DocumentInterface;
-
 /**
  * Import event item carrying both Doctrine entity and ES document.
  */
@@ -24,18 +22,25 @@ abstract class AbstractImportItem
     protected $entity;
 
     /**
-     * @var DocumentInterface
+     * @var array
      */
     protected $document;
 
     /**
-     * @param mixed             $entity
-     * @param DocumentInterface $document
+     * @var string
      */
-    public function __construct($entity, DocumentInterface $document)
+    protected $documentClass;
+
+    /**
+     * @param mixed  $entity
+     * @param array  $document
+     * @param string $documentClass
+     */
+    public function __construct($entity, array $document, $documentClass)
     {
         $this->setEntity($entity);
         $this->setDocument($document);
+        $this->setDocumentClass($documentClass);
     }
 
     /**
@@ -55,7 +60,7 @@ abstract class AbstractImportItem
     }
 
     /**
-     * @return DocumentInterface
+     * @return array
      */
     public function getDocument()
     {
@@ -63,10 +68,30 @@ abstract class AbstractImportItem
     }
 
     /**
-     * @param DocumentInterface $document
+     * @param array $document
      */
-    public function setDocument(DocumentInterface $document)
+    public function setDocument(array $document)
     {
         $this->document = $document;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDocumentClass()
+    {
+        return $this->documentClass;
+    }
+
+    /**
+     * @param string $documentClass
+     *
+     * @return $this
+     */
+    public function setDocumentClass($documentClass)
+    {
+        $this->documentClass = $documentClass;
+
+        return $this;
     }
 }

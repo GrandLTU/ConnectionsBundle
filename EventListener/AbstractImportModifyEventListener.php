@@ -58,5 +58,25 @@ abstract class AbstractImportModifyEventListener implements LoggerAwareInterface
      * @param AbstractImportItem $eventItem
      * @param ItemPipelineEvent  $event
      */
-    abstract protected function modify(AbstractImportItem $eventItem, ItemPipelineEvent $event);
+    protected function modify(AbstractImportItem $eventItem, ItemPipelineEvent $event)
+    {
+        $eventItem->setDocument(
+            $this->transform(
+                $eventItem->getDocument(),
+                $eventItem->getDocumentClass(),
+                $eventItem->getEntity()
+            )
+        );
+    }
+
+    /**
+     * Transforms entity to document.
+     *
+     * @param array  $document      Base Document.
+     * @param string $documentClass
+     * @param object $entity
+     *
+     * @return array Transformed document.
+     */
+    abstract protected function transform(array $document, $documentClass, $entity);
 }
